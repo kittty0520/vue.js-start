@@ -1,24 +1,42 @@
 <template>
 	<div id="app">
-		<app-header v-bind:title="str" v-on:renew="renewStr"></app-header>
+		<form action="" v-on:submit.prevent="submitForm">
+			<div>
+				<label for="username">id: </label>
+				<input type="text" id="username" v-model="username" />
+			</div>
+			<div>
+				<label for="password">password: </label>
+				<input type="password" id="password" v-model="password" />
+			</div>
+			<button type="submit">login</button>
+		</form>
 	</div>
 </template>
 
 <script>
-import AppHeader from './components/AppHeader.vue';
+import axios from 'axios';
 export default {
 	name: 'App',
 	data: function () {
 		return {
-			str: 'Header',
+			username: '',
+			password: '',
 		};
 	},
-	components: {
-		'app-header': AppHeader,
-	},
+	components: {},
 	methods: {
-		renewStr: function () {
-			this.str = 'hi';
+		submitForm: function () {
+			// event.preventDefault();
+			var url = 'https://jsonplaceholder.typicode.com/users';
+			var data = {
+				username: this.username,
+				password: this.password,
+			};
+			axios
+				.post(url, data)
+				.then((res) => console.log(res))
+				.catch((error) => console.log(error));
 		},
 	},
 };
